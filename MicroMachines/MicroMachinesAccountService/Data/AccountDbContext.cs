@@ -5,7 +5,7 @@ namespace MicroMachinesAccountService.Data
 {
     public class AccountDbContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Account> Accounts { get; set; } = null!;
 
         public AccountDbContext(DbContextOptions<AccountDbContext> options)
             : base(options)
