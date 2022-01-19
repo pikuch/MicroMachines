@@ -20,4 +20,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.SeedDb();
+
 app.Run();
