@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<UserReadDto>>(users));
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}", Name = "GetById")]
     public async Task<ActionResult<UserReadDto>> GetById(int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
