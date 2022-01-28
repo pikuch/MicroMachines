@@ -64,7 +64,7 @@ public class UserController : ControllerBase
         _mapper.Map(user, foundUser);
 
         bool result = await _userRepository.UpdateAsync(userId, foundUser);
-        return (result) ? NoContent() : BadRequest();
+        return (result) ? Ok() : BadRequest();
     }
 
     [HttpDelete("{userId}")]
@@ -76,6 +76,30 @@ public class UserController : ControllerBase
             return NotFound();
         }
         bool result = await _userRepository.DeleteAsync(userId);
-        return (result) ? NoContent() : BadRequest();
+        return (result) ? Ok() : BadRequest();
+    }
+
+    [HttpGet]
+    [Route("{userId}/products")]
+    public async Task<ActionResult<IEnumerable<ItineraryItemReadDto>>> GetProducts(int userId)
+    {
+        var products = await _userRepository.GetProductsAsync(userId);
+        if (products == null)
+        {
+            return NotFound();
+        }
+        return Ok(_mapper.Map<IEnumerable<ItineraryItemReadDto>>(products));
+    }
+
+    [HttpPost]
+    [Route("{userId}/products")]
+    public async Task<ActionResult> AddProducts(int userId, IEnumerable<ItineraryItemCreateDto> items)
+    {
+        if (!items.Any())
+        {
+            return BadRequest();
+        }
+        bool result = await _userRepository.AddProductsAsync(userId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
+        return (result) ? Ok() : BadRequest();
     }
 }
