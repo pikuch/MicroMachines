@@ -3,6 +3,7 @@ using MicroMachinesCommon.Dtos;
 using MicroMachinesUserService.Models;
 using MicroMachinesUserService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MicroMachinesUserService.Controllers;
 
@@ -25,6 +26,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation("Gets all users", "GET /users")]
     public async Task<ActionResult<IEnumerable<UserReadDto>>> GetAll()
     {
         var users = await _userRepository.GetAllAsync();
@@ -36,6 +38,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userId}", Name = "GetById")]
+    [SwaggerOperation("Gets a user by id", "GET /users/{userId}")]
     public async Task<ActionResult<UserReadDto>> GetById(int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
@@ -47,6 +50,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation("Creates a new user", "POST /users")]
     public async Task<ActionResult> Create(UserCreateDto user)
     {
         var newUser = await _userRepository.CreateAsync(_mapper.Map<User>(user));
@@ -54,6 +58,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{userId}")]
+    [SwaggerOperation("Updates the user with given id", "PUT /users/{userId}")]
     public async Task<ActionResult> Update(int userId, UserUpdateDto user)
     {
         var foundUser = await _userRepository.GetByIdAsync(userId);
@@ -68,6 +73,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{userId}")]
+    [SwaggerOperation("Deletes the user with given id", "DELETE /users/{userId}")]
     public async Task<ActionResult> Delete(int userId)
     {
         var foundUser = await _userRepository.GetByIdAsync(userId);
@@ -81,6 +87,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("{userId}/products")]
+    [SwaggerOperation("Gets all products the user has", "GET /users/{userId}/products")]
     public async Task<ActionResult<IEnumerable<ItineraryItemReadDto>>> GetProducts(int userId)
     {
         var products = await _userRepository.GetProductsAsync(userId);
@@ -93,6 +100,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("{userId}/products")]
+    [SwaggerOperation("Adds products to the user", "POST /users/{userId}/products")]
     public async Task<ActionResult> AddProducts(int userId, IEnumerable<ItineraryItemCreateDto> items)
     {
         if (!items.Any())

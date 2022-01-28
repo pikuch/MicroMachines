@@ -3,6 +3,7 @@ using MicroMachinesCommon.Dtos;
 using MicroMachinesProductService.Models;
 using MicroMachinesProductService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MicroMachinesProductService.Controllers;
 
@@ -25,6 +26,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation("Gets all products", "GET /products")]
     public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetAll()
     {
         var products = await _productRepository.GetAllAsync();
@@ -36,6 +38,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{productId}", Name = "GetById")]
+    [SwaggerOperation("Gets the product with given id", "GET /products/{productId}")]
     public async Task<ActionResult<ProductReadDto>> GetById(int productId)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -47,6 +50,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation("Creates a new product", "POST /products")]
     public async Task<ActionResult> Create(ProductCreateDto product)
     {
         var newProduct = await _productRepository.CreateAsync(_mapper.Map<Product>(product));
@@ -54,6 +58,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{productId}")]
+    [SwaggerOperation("Updates the product with given id", "PUT /products/{productId}")]
     public async Task<ActionResult> Update(int productId, ProductUpdateDto product)
     {
         var foundProduct = await _productRepository.GetByIdAsync(productId);
@@ -68,6 +73,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{productId}")]
+    [SwaggerOperation("Deletes the product with given id", "DELETE /products/{productId}")]
     public async Task<ActionResult> Delete(int productId)
     {
         var foundProduct = await _productRepository.GetByIdAsync(productId);

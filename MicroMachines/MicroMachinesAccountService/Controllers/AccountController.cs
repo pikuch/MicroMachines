@@ -3,6 +3,7 @@ using MicroMachinesAccountService.Models;
 using MicroMachinesAccountService.Services;
 using MicroMachinesCommon.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MicroMachinesAccountService.Controllers;
 
@@ -25,6 +26,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation("Gets all accounts", "GET /accounts")]
     public async Task<ActionResult<IEnumerable<AccountReadDto>>> GetAll()
     {
         var accounts = await _accountRepository.GetAllAsync();
@@ -36,6 +38,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("{accountId}", Name = "GetById")]
+    [SwaggerOperation("Gets the account with given id", "GET /accounts/{accountId}")]
     public async Task<ActionResult<AccountReadDto>> GetById(int accountId)
     {
         var account = await _accountRepository.GetByIdAsync(accountId);
@@ -47,6 +50,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation("Adds a new account", "POST /accounts")]
     public async Task<ActionResult> Create(AccountCreateDto account)
     {
         var newAccount = await _accountRepository.CreateAsync(_mapper.Map<Account>(account));
@@ -54,6 +58,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut("{accountId}")]
+    [SwaggerOperation("Updates the account with given id", "PUT /accounts/{accountId}")]
     public async Task<ActionResult> Update(int accountId, AccountUpdateDto account)
     {
         var foundAccount = await _accountRepository.GetByIdAsync(accountId);
@@ -68,6 +73,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpDelete("{accountId}")]
+    [SwaggerOperation("Deletes the account with given id", "DELETE /accounts/{accountId}")]
     public async Task<ActionResult> Delete(int accountId)
     {
         var foundAccount = await _accountRepository.GetByIdAsync(accountId);
@@ -81,6 +87,7 @@ public class AccountController : ControllerBase
 
     [HttpPut]
     [Route("{accountId}/charge/{amount}")]
+    [SwaggerOperation("Removes given amount of money from the account with given id", "PUT /accounts/{accountId}/charge/{amount}")]
     public async Task<ActionResult> ChargeAccount(int accountId, decimal amount)
     {
         if (amount <= 0)

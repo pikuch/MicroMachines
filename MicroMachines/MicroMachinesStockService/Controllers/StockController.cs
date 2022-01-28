@@ -3,6 +3,7 @@ using MicroMachinesCommon.Dtos;
 using MicroMachinesStockService.Models;
 using MicroMachinesStockService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MicroMachinesStockService.Controllers;
 
@@ -25,6 +26,7 @@ public class StockController : ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation("Gets all stocks", "GET /stocks")]
     public async Task<ActionResult<IEnumerable<StockReadDto>>> GetAll()
     {
         var stocks = await _stockRepository.GetAllAsync();
@@ -36,6 +38,7 @@ public class StockController : ControllerBase
     }
 
     [HttpGet("{stockId}", Name = "GetById")]
+    [SwaggerOperation("Gets stock by id", "GET /stocks/{stockId}")]
     public async Task<ActionResult<StockReadDto>> GetById(int stockId)
     {
         var stock = await _stockRepository.GetByIdAsync(stockId);
@@ -47,6 +50,7 @@ public class StockController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation("Creates a new stock", "POST /stocks")]
     public async Task<ActionResult> Create(StockCreateDto stock)
     {
         var newStock = await _stockRepository.CreateAsync(_mapper.Map<Stock>(stock));
@@ -54,6 +58,7 @@ public class StockController : ControllerBase
     }
 
     [HttpPut("{stockId}")]
+    [SwaggerOperation("Updates a stock", "PUT /stocks/{stockId}")]
     public async Task<ActionResult> Update(int stockId, StockUpdateDto stock)
     {
         var foundStock = await _stockRepository.GetByIdAsync(stockId);
@@ -68,6 +73,7 @@ public class StockController : ControllerBase
     }
 
     [HttpDelete("{stockId}")]
+    [SwaggerOperation("Deletes a stock if it's empty", "DELETE /stocks/{stockId}")]
     public async Task<ActionResult> Delete(int stockId)
     {
         var foundStock = await _stockRepository.GetByIdAsync(stockId);
@@ -81,6 +87,7 @@ public class StockController : ControllerBase
 
     [HttpPost]
     [Route("{stockId}/products")]
+    [SwaggerOperation("Adds products to the stock with given id", "POST /stocks/{stockId}/products")]
     public async Task<ActionResult> AddProducts(int stockId, IEnumerable<ItineraryItemCreateDto> items)
     {
         if (!items.Any())
@@ -93,6 +100,7 @@ public class StockController : ControllerBase
 
     [HttpPut]
     [Route("{stockId}/products")]
+    [SwaggerOperation("Removes products from the stock with given id", "PUT /stocks/{stockId}/products")]
     public async Task<ActionResult> RemoveProducts(int stockId, IEnumerable<ItineraryItemCreateDto> items)
     {
         if (!items.Any())
