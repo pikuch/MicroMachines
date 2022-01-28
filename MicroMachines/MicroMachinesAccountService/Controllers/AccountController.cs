@@ -1,33 +1,32 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MicroMachinesAccountService.Controllers
+namespace MicroMachinesAccountService.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class AccountController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class AccountController : ControllerBase
+    private readonly ILogger<AccountController> _logger;
+    private readonly IMapper _mapper;
+
+    public AccountController(
+        ILogger<AccountController> logger,
+        IMapper mapper)
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<AccountController> _logger;
-
-        public AccountController(ILogger<AccountController> logger)
-        {
-            _logger = logger;
-        }
-
-        //[HttpGet(Name = "GetWeatherForecast")]
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
+        _logger = logger;
+        _mapper = mapper;
     }
+
+    //[HttpGet(Name = "GetWeatherForecast")]
+    //public IEnumerable<WeatherForecast> Get()
+    //{
+    //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+    //    {
+    //        Date = DateTime.Now.AddDays(index),
+    //        TemperatureC = Random.Shared.Next(-20, 55),
+    //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+    //    })
+    //    .ToArray();
+    //}
 }
