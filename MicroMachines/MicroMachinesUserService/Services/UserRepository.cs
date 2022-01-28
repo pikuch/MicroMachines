@@ -41,7 +41,7 @@ public class UserRepository : IUserRepository
         return await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
     }
 
-    public async Task<bool> UpdateAsync(int userId, User user)
+    public async Task<bool> UpdateAsync()
     {
         return await _context.SaveChangesAsync() == 1;
     }

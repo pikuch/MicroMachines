@@ -17,11 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroMachinesUserService\MicroMachinesUserService.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\MicroMachinesCommon\MicroMachinesCommon.csproj" />
   </ItemGroup>
 
 </Project>

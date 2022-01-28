@@ -40,7 +40,7 @@ public class AccountRepository : IAccountRepository
         return await _context.Accounts.SingleOrDefaultAsync(x => x.Id == accountId);
     }
 
-    public async Task<bool> UpdateAsync(int accountId, Account account)
+    public async Task<bool> UpdateAsync()
     {
         return await _context.SaveChangesAsync() == 1;
     }

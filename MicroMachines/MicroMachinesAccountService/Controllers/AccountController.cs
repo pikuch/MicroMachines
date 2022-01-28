@@ -63,7 +63,7 @@ public class AccountController : ControllerBase
         }
         _mapper.Map(account, foundAccount);
 
-        bool result = await _accountRepository.UpdateAsync(accountId, foundAccount);
+        bool result = await _accountRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
 
@@ -98,7 +98,7 @@ public class AccountController : ControllerBase
         }
 
         account.Balance -= amount;
-        bool result = await _accountRepository.UpdateAsync(account.Id, account);
+        bool result = await _accountRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
 }

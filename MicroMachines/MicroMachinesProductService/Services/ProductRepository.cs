@@ -40,7 +40,7 @@ public class ProductRepository : IProductRepository
         return await _context.Products.SingleOrDefaultAsync(x => x.Id == productId);
     }
 
-    public async Task<bool> UpdateAsync(int productId, Product product)
+    public async Task<bool> UpdateAsync()
     {
         return await _context.SaveChangesAsync() == 1;
     }

@@ -63,7 +63,7 @@ public class ProductController : ControllerBase
         }
         _mapper.Map(product, foundProduct);
 
-        bool result = await _productRepository.UpdateAsync(productId, foundProduct);
+        bool result = await _productRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
 

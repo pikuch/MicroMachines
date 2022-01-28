@@ -63,7 +63,7 @@ public class UserController : ControllerBase
         }
         _mapper.Map(user, foundUser);
 
-        bool result = await _userRepository.UpdateAsync(userId, foundUser);
+        bool result = await _userRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
 
