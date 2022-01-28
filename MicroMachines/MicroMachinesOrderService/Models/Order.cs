@@ -10,10 +10,9 @@ namespace MicroMachinesOrderService.Models
         public List<ItineraryItem> Itinerary { get; set; } = null!;
         [Required]
         public int UserId { get; set; }
-        [Required]
         [DataType(DataType.DateTime)]
         public DateTime PurchaseDate { get; set; }
-        public int TransactionId { get; set; }
+        public int? TransactionId { get; set; }
         [Required]
         public OrderStatus Status { get; set; }
     }

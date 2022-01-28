@@ -8,7 +8,7 @@ namespace MicroMachinesOrderService.Models
         public List<ItineraryItem> Itinerary { get; set; }
         public int UserId { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public int TransactionId { get; set; }
+        public int? TransactionId { get; set; }
         public OrderStatus Status { get; set; }
     }
 }
