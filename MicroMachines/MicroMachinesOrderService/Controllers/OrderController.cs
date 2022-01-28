@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroMachinesOrderService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("orders")]
 public class OrderController : ControllerBase
 {
     private readonly ILogger<OrderController> _logger;

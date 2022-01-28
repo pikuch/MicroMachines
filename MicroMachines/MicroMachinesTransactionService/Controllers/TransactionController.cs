@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroMachinesTransactionService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("transactions")]
 public class TransactionController : ControllerBase
 {
     private readonly ILogger<TransactionController> _logger;

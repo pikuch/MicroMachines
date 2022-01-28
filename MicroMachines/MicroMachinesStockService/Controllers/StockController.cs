@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroMachinesStockService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("stocks")]
 public class StockController : ControllerBase
 {
     private readonly ILogger<StockController> _logger;

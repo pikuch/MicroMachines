@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroMachinesAccountService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("accounts")]
 public class AccountController : ControllerBase
 {
     private readonly ILogger<AccountController> _logger;
