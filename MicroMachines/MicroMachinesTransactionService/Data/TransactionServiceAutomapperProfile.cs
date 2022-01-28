@@ -9,6 +9,7 @@ public class TransactionServiceAutomapperProfile : Profile
     public TransactionServiceAutomapperProfile()
     {
         CreateMap<TransactionCreateDto, Transaction>();
+        CreateMap<TransactionUpdateDto, Transaction>();
         CreateMap<Transaction, TransactionReadDto>();
     }
 }

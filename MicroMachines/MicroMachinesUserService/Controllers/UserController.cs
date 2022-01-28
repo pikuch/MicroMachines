@@ -54,7 +54,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{userId}")]
-    public async Task<ActionResult> Update(int userId, UserCreateDto user)
+    public async Task<ActionResult> Update(int userId, UserUpdateDto user)
     {
         var foundUser = await _userRepository.GetByIdAsync(userId);
         if (foundUser == null)

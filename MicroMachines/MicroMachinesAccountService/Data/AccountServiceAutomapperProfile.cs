@@ -9,6 +9,7 @@ public class AccountServiceAutomapperProfile : Profile
     public AccountServiceAutomapperProfile()
     {
         CreateMap<AccountCreateDto, Account>();
+        CreateMap<AccountUpdateDto, Account>();
         CreateMap<Account, AccountReadDto>();
     }
 }
