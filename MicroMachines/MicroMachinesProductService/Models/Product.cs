@@ -14,6 +14,7 @@ namespace MicroMachinesProductService.Models
         public Category Category { get; set; } = null!;
         [Required]
         [DataType(DataType.Currency)]
+        [Range(0.01, 1_000_000_000)]
         public decimal Price { get; set; }
     }
 }

@@ -37,6 +37,20 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<ProductReadDto>>(products));
     }
 
+    [HttpGet]
+    [Route("category/{categoryId}")]
+    [SwaggerOperation("Gets products by category", "GET /products/category/{categoryId}")]
+    public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetByCategory(int categoryId)
+    {
+        var products = await _productRepository.GetAllAsync();
+        if (products == null)
+        {
+            return NotFound();
+        }
+        var productsInCategory = products.Where(x => x.CategoryId == categoryId);
+        return Ok(_mapper.Map<IEnumerable<ProductReadDto>>(productsInCategory));
+    }
+
     [HttpGet("{productId}", Name = "GetById")]
     [SwaggerOperation("Gets the product with given id", "GET /products/{productId}")]
     public async Task<ActionResult<ProductReadDto>> GetById(int productId)

@@ -11,5 +11,6 @@ public class ProductUpdateDto
     public int CategoryId { get; set; }
     [Required]
     [DataType(DataType.Currency)]
+    [Range(0.01, 1_000_000_000)]
     public decimal Price { get; set; }
 }
