@@ -1,4 +1,5 @@
 using MicroMachinesTransactionService.Data;
+using MicroMachinesTransactionService.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 builder.Services.AddDbContext<TransactionDbContext>(options => options.UseInMemoryDatabase("TransactionDatabase"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 var app = builder.Build();
 

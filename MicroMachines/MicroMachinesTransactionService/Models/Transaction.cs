@@ -16,6 +16,7 @@ namespace MicroMachinesTransactionService.Models
         public DateTime TimeStamp { get; set; }
         [Required]
         [DataType(DataType.Currency)]
+        [Range(0.01, 1_000_000_000)]
         public decimal Amount { get; set; }
         [Required]
         public TransactionStatus Status { get; set; }
