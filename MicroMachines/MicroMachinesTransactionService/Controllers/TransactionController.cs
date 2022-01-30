@@ -41,7 +41,7 @@ public class TransactionController : ControllerBase
     [HttpGet]
     [Route("user/{userId}")]
     [SwaggerOperation("Gets user's transactions", "GET /transactions/user/{userId}")]
-    public async Task<ActionResult<IEnumerable<TransactionReadDto>>> GetforUser(int userId)
+    public async Task<ActionResult<IEnumerable<TransactionReadDto>>> GetForUser(int userId)
     {
         var transactions = await _transactionRepository.GetForUserAsync(userId);
         if (transactions == null)

@@ -6,7 +6,7 @@ namespace MicroMachinesCommon.Dtos;
 public class OrderUpdateDto
 {
     [Required]
-    public List<ItineraryItemCreateDto> Itinerary { get; set; } = null!;
-    [Required]
     public int UserId { get; set; }
+    [Required]
+    public OrderStatus OrderStatus { get; set; }
 }
