@@ -100,4 +100,23 @@ public class OrderController : ControllerBase
         bool result = await _orderRepository.DeleteAsync(orderId);
         return (result) ? Ok() : BadRequest();
     }
+
+    [HttpPost("{orderId}")]
+    [SwaggerOperation("Adds items to the chosen order", "POST /orders/{orderId}")]
+    public async Task<ActionResult> AddItems(int orderId, IEnumerable<ItineraryItemCreateDto> items)
+    {
+        if (items.Count() == 0)
+        {
+            return BadRequest();
+        }
+
+        var order = await _orderRepository.GetByIdAsync(orderId);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        bool result = await _orderRepository.AddItemsAsync(orderId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
+        return (result) ? Ok() : BadRequest();
+    }
 }

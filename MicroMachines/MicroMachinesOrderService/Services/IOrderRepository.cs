@@ -10,4 +10,5 @@ public interface IOrderRepository
     public Task<Order> CreateAsync(Order order);
     public Task<bool> UpdateAsync();
     public Task<bool> DeleteAsync(int orderId);
+    public Task<bool> AddItemsAsync(int orderId, IEnumerable<ItineraryItem> items);
 }

@@ -55,4 +55,28 @@ public class OrderRepository : IOrderRepository
             .Where(x => x.UserId == userId)
             .AsNoTracking().ToListAsync();
     }
+
+    public async Task<bool> AddItemsAsync(int orderId, IEnumerable<ItineraryItem> items)
+    {
+        var order = await _context.Orders.Include(x => x.Itinerary).SingleOrDefaultAsync(x => x.Id == orderId);
+        if (order == null)
+        {
+            return false;
+        }
+
+        foreach (var item in items)
+        {
+            var existing = order.Itinerary.FirstOrDefault(x => x.ProductId == item.ProductId);
+            if (existing == null)
+            {
+                order.Itinerary.Add(item);
+            }
+            else
+            {
+                existing.Count += item.Count;
+            }
+        }
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }
