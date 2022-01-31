@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "micromachinesgateway",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "micromachinesaccountservice": "DoNotStart",
+        "micromachinesgateway": "StartDebugging",
+        "micromachinesorderservice": "DoNotStart",
+        "micromachinesproductservice": "StartDebugging",
+        "micromachinesstockservice": "DoNotStart",
+        "micromachinestransactionservice": "DoNotStart",
+        "micromachinesuserservice": "DoNotStart"
+      }
+    }
+  }
+}

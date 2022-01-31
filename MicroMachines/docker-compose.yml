@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  micromachinesgateway:
+    image: ${DOCKER_REGISTRY-}micromachinesgateway
+    build:
+      context: .
+      dockerfile: MicroMachinesGateway/Dockerfile
+
+  micromachinesaccountservice:
+    image: ${DOCKER_REGISTRY-}micromachinesaccountservice
+    build:
+      context: .
+      dockerfile: MicroMachinesAccountService/Dockerfile
+
+  micromachinesorderservice:
+    image: ${DOCKER_REGISTRY-}micromachinesorderservice
+    build:
+      context: .
+      dockerfile: MicroMachinesOrderService/Dockerfile
+
+  micromachinesproductservice:
+    image: ${DOCKER_REGISTRY-}micromachinesproductservice
+    build:
+      context: .
+      dockerfile: MicroMachinesProductService/Dockerfile
+
+  micromachinesstockservice:
+    image: ${DOCKER_REGISTRY-}micromachinesstockservice
+    build:
+      context: .
+      dockerfile: MicroMachinesStockService/Dockerfile
+
+  micromachinestransactionservice:
+    image: ${DOCKER_REGISTRY-}micromachinestransactionservice
+    build:
+      context: .
+      dockerfile: MicroMachinesTransactionService/Dockerfile
+
+  micromachinesuserservice:
+    image: ${DOCKER_REGISTRY-}micromachinesuserservice
+    build:
+      context: .
+      dockerfile: MicroMachinesUserService/Dockerfile

@@ -29,4 +29,20 @@ public class ProductService : IProductService
 
         return null;
     }
+
+    public async Task<IEnumerable<ProductReadDto>?> GetAllFromCategoryAsync(int categoryId)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        HttpRequestMessage request = new HttpRequestMessage(
+            HttpMethod.Get,
+            $"{_configuration["ProductService"]}/products/category/{categoryId}");
+        var response = await httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsAsync<IEnumerable<ProductReadDto>>();
+        }
+
+        return null;
+    }
 }
