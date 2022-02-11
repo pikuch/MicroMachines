@@ -37,6 +37,18 @@ public class AccountController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<AccountReadDto>>(accounts));
     }
 
+    [HttpGet("user/{userId}")]
+    [SwaggerOperation("Gets all accounts of given user", "GET /accounts/user/{userId}")]
+    public async Task<ActionResult<IEnumerable<AccountReadDto>>> GetAllForUser(int userId)
+    {
+        var accounts = await _accountRepository.GetAllForUserAsync(userId);
+        if (accounts == null)
+        {
+            return NotFound();
+        }
+        return Ok(_mapper.Map<IEnumerable<AccountReadDto>>(accounts));
+    }
+
     [HttpGet("{accountId}", Name = "GetById")]
     [SwaggerOperation("Gets the account with given id", "GET /accounts/{accountId}")]
     public async Task<ActionResult<AccountReadDto>> GetById(int accountId)

@@ -7,13 +7,13 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "commandVersion": "1.0",
       "serviceActions": {
-        "micromachinesaccountservice": "DoNotStart",
+        "micromachinesaccountservice": "StartDebugging",
         "micromachinesgateway": "StartDebugging",
-        "micromachinesorderservice": "DoNotStart",
+        "micromachinesorderservice": "StartDebugging",
         "micromachinesproductservice": "StartDebugging",
-        "micromachinesstockservice": "DoNotStart",
-        "micromachinestransactionservice": "DoNotStart",
-        "micromachinesuserservice": "DoNotStart"
+        "micromachinesstockservice": "StartDebugging",
+        "micromachinestransactionservice": "StartDebugging",
+        "micromachinesuserservice": "StartDebugging"
       }
     }
   }

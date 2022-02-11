@@ -35,6 +35,11 @@ public class AccountRepository : IAccountRepository
         return await _context.Accounts.AsNoTracking().ToListAsync();
     }
 
+    public async Task<IEnumerable<Account>> GetAllForUserAsync(int userId)
+    {
+        return await _context.Accounts.Where(x => x.UserId == userId).AsNoTracking().ToListAsync();
+    }
+
     public async Task<Account?> GetByIdAsync(int accountId)
     {
         return await _context.Accounts.SingleOrDefaultAsync(x => x.Id == accountId);
