@@ -85,4 +85,22 @@ public class GatewayController : ControllerBase
         return (accounts == null) ? NotFound() : Ok(accounts);
     }
 
+    [HttpPost]
+    [Route("transaction/create")]
+    [SwaggerOperation("Creates a new transaction", "POST api/transaction/create")]
+    public async Task<ActionResult> CreateTransaction(TransactionCreateDto transactionCreateDto)
+    {
+        bool result = await _transactionService.CreateAsync(transactionCreateDto);
+        return (result) ? Ok() : BadRequest();
+    }
+
+    [HttpPut]
+    [Route("transaction/{transactionId}/confirm")]
+    [SwaggerOperation("Confirms a transaction", "PUT api/transaction/{transactionId}/confirm")]
+    public async Task<ActionResult> ConfirmTransaction(int transactionId)
+    {
+        bool result = await _transactionService.ConfirmAsync(transactionId);
+        return (result) ? Ok() : BadRequest();
+    }
+
 }

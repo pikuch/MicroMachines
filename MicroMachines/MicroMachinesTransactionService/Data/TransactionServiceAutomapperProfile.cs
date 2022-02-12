@@ -10,6 +10,7 @@ public class TransactionServiceAutomapperProfile : Profile
     {
         CreateMap<TransactionCreateDto, Transaction>();
         CreateMap<TransactionUpdateDto, Transaction>();
+        CreateMap<Transaction, TransactionUpdateDto>();
         CreateMap<Transaction, TransactionReadDto>();
     }
 }

@@ -15,15 +15,18 @@ public class TransactionController : ControllerBase
     private readonly ILogger<TransactionController> _logger;
     private readonly IMapper _mapper;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly IAccountService _accountService;
 
     public TransactionController(
         ILogger<TransactionController> logger,
         IMapper mapper,
-        ITransactionRepository transactionRepository)
+        ITransactionRepository transactionRepository,
+        IAccountService accountService)
     {
         _logger = logger;
         _mapper = mapper;
         _transactionRepository = transactionRepository;
+        _accountService = accountService;
     }
 
     [HttpGet]
@@ -106,6 +109,12 @@ public class TransactionController : ControllerBase
         {
             return BadRequest();
         }
+        bool executed = await _accountService.ExecuteTransactionAsync(_mapper.Map<TransactionUpdateDto>(foundTransaction));
+        if (!executed)
+        {
+            return BadRequest();
+        }
+
         foundTransaction.Status = TransactionStatus.Confirmed;
         foundTransaction.TimeStamp = DateTime.Now;
 

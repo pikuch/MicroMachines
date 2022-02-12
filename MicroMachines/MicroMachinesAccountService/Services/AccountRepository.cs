@@ -47,6 +47,6 @@ public class AccountRepository : IAccountRepository
 
     public async Task<bool> UpdateAsync()
     {
-        return await _context.SaveChangesAsync() == 1;
+        return await _context.SaveChangesAsync() >= 1;
     }
 }

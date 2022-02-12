@@ -120,4 +120,33 @@ public class AccountController : ControllerBase
         bool result = await _accountRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
+
+    [HttpPut]
+    [Route("executetransaction")]
+    [SwaggerOperation("Executes given transaction if possible", "PUT /executetransaction")]
+    public async Task<ActionResult> ExecuteTransaction(TransactionUpdateDto transaction)
+    {
+        if (transaction.AccountFromId == transaction.AccountToId)
+        {
+            return BadRequest();
+        }
+        var accountFrom = await _accountRepository.GetByIdAsync(transaction.AccountFromId);
+        var accountTo = await _accountRepository.GetByIdAsync(transaction.AccountToId);
+        if (accountFrom == null || accountTo == null)
+        {
+            return BadRequest();
+        }
+        if (accountFrom.IsClosed || accountTo.IsClosed)
+        {
+            return BadRequest();
+        }
+        if (accountFrom.Balance < transaction.Amount)
+        {
+            return BadRequest();
+        }
+        accountFrom.Balance -= transaction.Amount;
+        accountTo.Balance += transaction.Amount;
+        bool result = await _accountRepository.UpdateAsync();
+        return (result) ? Ok() : BadRequest();
+    }
 }
