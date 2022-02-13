@@ -5,17 +5,21 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesUserService", "MicroMachinesUserService\MicroMachinesUserService.csproj", "{6AA76DF9-6973-4BB3-AD94-2A08C17AB97E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesCommon", "MicroMachinesCommon\MicroMachinesCommon.csproj", "{5E7E541E-71E9-407F-9EBA-7619AB9A2E28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesCommon", "MicroMachinesCommon\MicroMachinesCommon.csproj", "{5E7E541E-71E9-407F-9EBA-7619AB9A2E28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesTransactionService", "MicroMachinesTransactionService\MicroMachinesTransactionService.csproj", "{B9BDEE64-21A2-41EE-BDDA-B2BA35ECE6CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesTransactionService", "MicroMachinesTransactionService\MicroMachinesTransactionService.csproj", "{B9BDEE64-21A2-41EE-BDDA-B2BA35ECE6CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesStockService", "MicroMachinesStockService\MicroMachinesStockService.csproj", "{3831D034-D571-4647-B97B-631B93CE02BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesStockService", "MicroMachinesStockService\MicroMachinesStockService.csproj", "{3831D034-D571-4647-B97B-631B93CE02BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesProductService", "MicroMachinesProductService\MicroMachinesProductService.csproj", "{DD9E783F-1B47-48A5-8C5F-F9433B48D162}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesProductService", "MicroMachinesProductService\MicroMachinesProductService.csproj", "{DD9E783F-1B47-48A5-8C5F-F9433B48D162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesOrderService", "MicroMachinesOrderService\MicroMachinesOrderService.csproj", "{919FBD47-2B40-4679-8827-AC386541B955}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesOrderService", "MicroMachinesOrderService\MicroMachinesOrderService.csproj", "{919FBD47-2B40-4679-8827-AC386541B955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesAccountService", "MicroMachinesAccountService\MicroMachinesAccountService.csproj", "{BCDCC2AA-9C89-4D72-B130-B5FF12C84FA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroMachinesAccountService", "MicroMachinesAccountService\MicroMachinesAccountService.csproj", "{BCDCC2AA-9C89-4D72-B130-B5FF12C84FA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroMachinesGateway", "MicroMachinesGateway\MicroMachinesGateway.csproj", "{8D4F248A-8585-4CB5-9C94-CB92C2B95750}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C124B7C9-4A5C-4A8F-9A10-6E85925CE2AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{BCDCC2AA-9C89-4D72-B130-B5FF12C84FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCDCC2AA-9C89-4D72-B130-B5FF12C84FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCDCC2AA-9C89-4D72-B130-B5FF12C84FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D4F248A-8585-4CB5-9C94-CB92C2B95750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D4F248A-8585-4CB5-9C94-CB92C2B95750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D4F248A-8585-4CB5-9C94-CB92C2B95750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D4F248A-8585-4CB5-9C94-CB92C2B95750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C124B7C9-4A5C-4A8F-9A10-6E85925CE2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C124B7C9-4A5C-4A8F-9A10-6E85925CE2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C124B7C9-4A5C-4A8F-9A10-6E85925CE2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C124B7C9-4A5C-4A8F-9A10-6E85925CE2AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

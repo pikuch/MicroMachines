@@ -1,4 +1,6 @@
-﻿namespace MicroMachinesProductService.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MicroMachinesProductService.Models
 {
     public interface IProduct
     {
