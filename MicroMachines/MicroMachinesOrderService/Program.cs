@@ -11,6 +11,7 @@ builder.Services.AddDbContext<OrderDbContext>(options => options.UseInMemoryData
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddSingleton<IPaymentQueue, PaymentQueue>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

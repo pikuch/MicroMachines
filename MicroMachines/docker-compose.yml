@@ -18,6 +18,8 @@ services:
     build:
       context: .
       dockerfile: MicroMachinesOrderService/Dockerfile
+    depends_on:
+      - rabbitmq
 
   micromachinesproductservice:
     image: ${DOCKER_REGISTRY-}micromachinesproductservice
@@ -36,6 +38,8 @@ services:
     build:
       context: .
       dockerfile: MicroMachinesTransactionService/Dockerfile
+    depends_on:
+      - rabbitmq
 
   micromachinesuserservice:
     image: ${DOCKER_REGISTRY-}micromachinesuserservice

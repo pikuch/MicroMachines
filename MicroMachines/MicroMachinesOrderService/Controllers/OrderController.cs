@@ -16,17 +16,20 @@ public class OrderController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IOrderRepository _orderRepository;
     private readonly IStockService _stockService;
+    private readonly IPaymentQueue _paymentQueue;
 
     public OrderController(
         ILogger<OrderController> logger,
         IMapper mapper,
         IOrderRepository orderRepository,
-        IStockService stockService)
+        IStockService stockService,
+        IPaymentQueue paymentQueue)
     {
         _logger = logger;
         _mapper = mapper;
         _orderRepository = orderRepository;
         _stockService = stockService;
+        _paymentQueue = paymentQueue;
     }
 
     [HttpGet]
@@ -80,9 +83,16 @@ public class OrderController : ControllerBase
         {
             newOrder.Status = OrderStatus.Denied;
         }
-
-
         var addedOrder = await _orderRepository.CreateAsync(newOrder);
+        if (newOrder.Status == OrderStatus.Pending)
+        {
+            bool enqueued = await _paymentQueue.Enqueue(addedOrder.Id);
+            if (!enqueued)
+            {
+                // deny the order when payment queue can't be reached
+                addedOrder.Status = OrderStatus.Denied;
+            }
+        }
         return CreatedAtRoute(nameof(GetById), new { orderId = addedOrder.Id }, _mapper.Map<OrderReadDto>(addedOrder));
     }
 
