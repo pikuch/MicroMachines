@@ -96,4 +96,27 @@ public class StockRepository : IStockRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
+    public async Task<bool> VerifyProductsAsync(int stockId, IEnumerable<ItineraryItem> items)
+    {
+        var stock = await _context.Stocks.Include(x => x.Balances).SingleOrDefaultAsync(x => x.Id == stockId);
+        if (stock == null)
+        {
+            return false;
+        }
+        foreach (var item in items)
+        {
+            var existing = stock.Balances.FirstOrDefault(x => x.ProductId == item.ProductId);
+            if (existing == null)
+            {
+                return false;
+            }
+            if (existing.Count < item.Count)
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
 }

@@ -15,15 +15,18 @@ public class OrderController : ControllerBase
     private readonly ILogger<OrderController> _logger;
     private readonly IMapper _mapper;
     private readonly IOrderRepository _orderRepository;
+    private readonly IStockService _stockService;
 
     public OrderController(
         ILogger<OrderController> logger,
         IMapper mapper,
-        IOrderRepository orderRepository)
+        IOrderRepository orderRepository,
+        IStockService stockService)
     {
         _logger = logger;
         _mapper = mapper;
         _orderRepository = orderRepository;
+        _stockService = stockService;
     }
 
     [HttpGet]
@@ -68,7 +71,15 @@ public class OrderController : ControllerBase
     public async Task<ActionResult> Create(OrderCreateDto order)
     {
         var newOrder = _mapper.Map<Order>(order);
-        newOrder.Status = OrderStatus.Pending;
+        bool sufficientStock = await _stockService.verifyStockAsync(order.Itinerary);
+        if (sufficientStock)
+        {
+            newOrder.Status = OrderStatus.Pending;
+        }
+        else
+        {
+            newOrder.Status = OrderStatus.Denied;
+        }
         var addedOrder = await _orderRepository.CreateAsync(newOrder);
         return CreatedAtRoute(nameof(GetById), new { orderId = addedOrder.Id }, _mapper.Map<OrderReadDto>(addedOrder));
     }

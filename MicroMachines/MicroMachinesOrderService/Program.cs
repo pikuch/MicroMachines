@@ -10,6 +10,8 @@ builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 builder.Services.AddDbContext<OrderDbContext>(options => options.UseInMemoryDatabase("OrderDatabase"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

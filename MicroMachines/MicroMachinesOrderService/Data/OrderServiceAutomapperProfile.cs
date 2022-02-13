@@ -14,5 +14,6 @@ public class OrderServiceAutomapperProfile : Profile
         CreateMap<ItineraryItemCreateDto, ItineraryItem>();
         CreateMap<ItineraryItemUpdateDto, ItineraryItem>();
         CreateMap<ItineraryItem, ItineraryItemReadDto>();
+        CreateMap<ItineraryItemReadDto, ItineraryItem>();
     }
 }
