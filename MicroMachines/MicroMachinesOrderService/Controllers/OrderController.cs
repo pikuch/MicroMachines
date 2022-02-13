@@ -80,6 +80,8 @@ public class OrderController : ControllerBase
         {
             newOrder.Status = OrderStatus.Denied;
         }
+
+
         var addedOrder = await _orderRepository.CreateAsync(newOrder);
         return CreatedAtRoute(nameof(GetById), new { orderId = addedOrder.Id }, _mapper.Map<OrderReadDto>(addedOrder));
     }
