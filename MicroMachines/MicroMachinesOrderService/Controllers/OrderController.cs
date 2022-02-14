@@ -86,7 +86,7 @@ public class OrderController : ControllerBase
         var addedOrder = await _orderRepository.CreateAsync(newOrder);
         if (newOrder.Status == OrderStatus.Pending)
         {
-            bool enqueued = await _paymentQueue.Enqueue(addedOrder.Id);
+            bool enqueued = await _paymentQueue.Enqueue(_mapper.Map<OrderReadDto>(addedOrder));
             if (!enqueued)
             {
                 // deny the order when payment queue can't be reached

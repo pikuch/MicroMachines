@@ -1,6 +1,8 @@
-﻿namespace MicroMachinesOrderService.Services;
+﻿using MicroMachinesCommon.Dtos;
+
+namespace MicroMachinesOrderService.Services;
 
 public interface IPaymentQueue
 {
-    public Task<bool> Enqueue(int orderId);
+    public Task<bool> Enqueue(OrderReadDto order);
 }

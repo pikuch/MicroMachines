@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using MicroMachinesCommon.Dtos;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System.Text;
 
 namespace MicroMachinesOrderService.Services;
@@ -17,13 +19,13 @@ public class PaymentQueue : IPaymentQueue
         _paymentQueueName = configuration["PaymentQueue"];
         _paymentExchangeName = configuration["PaymentExchange"];
     }
-    public async Task<bool> Enqueue(int orderId)
+    public async Task<bool> Enqueue(OrderReadDto order)
     {
         using var channel = _connection.CreateModel();
         channel.QueueDeclare(_paymentQueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
         channel.ExchangeDeclare(_paymentExchangeName, ExchangeType.Direct);
         channel.QueueBind(_paymentQueueName, _paymentExchangeName, "");
-        string message = orderId.ToString();
+        string message = JsonConvert.SerializeObject(order);
         var body = Encoding.UTF8.GetBytes(message);
         channel.BasicPublish(_paymentExchangeName, "", null, body);
         return true;
