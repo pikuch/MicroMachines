@@ -10,22 +10,45 @@ namespace MicroMachinesTransactionService.Services;
 
 public class PaymentQueueReceiver : BackgroundService
 {
-    private readonly IConnection _connection;
+    private readonly IConfiguration _configuration;
+    private IConnection _connection = null!;
+    private IModel? _channel;
     private readonly string _paymentQueueName;
+    private ConnectionFactory? _factory;
 
     public PaymentQueueReceiver(IConfiguration configuration)
     {
-        var factory = new ConnectionFactory();
-        factory.HostName = configuration["Rabbit"];
-        _connection = factory.CreateConnection();
+        _configuration = configuration;
         _paymentQueueName = configuration["PaymentQueue"];
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    public override Task StartAsync(CancellationToken cancellationToken)
     {
-        using var channel = _connection.CreateModel();
-        channel.QueueDeclare(_paymentQueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-        var paymentQueueConsumer = new EventingBasicConsumer(channel);
+        _factory = new ConnectionFactory
+        {
+            HostName = _configuration["Rabbit"],
+            DispatchConsumersAsync = true
+        };
+        _connection = _factory.CreateConnection();
+        _channel = _connection.CreateModel();
+        _channel.QueueDeclare(queue: _paymentQueueName,
+                                durable: true,
+                                exclusive: false,
+                                autoDelete: false,
+                                arguments: null);
+
+        return base.StartAsync(cancellationToken);
+    }
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await base.StopAsync(cancellationToken);
+        _connection.Close();
+    }
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        stoppingToken.ThrowIfCancellationRequested();
+
+        var paymentQueueConsumer = new AsyncEventingBasicConsumer(_channel);
 
         paymentQueueConsumer.Received += async (model, eventArgs) =>
         {
@@ -57,7 +80,7 @@ public class PaymentQueueReceiver : BackgroundService
             //await _userService.AddProducts(order.Itinerary);
             //await _orderService.UpdateOrder(order);
         };
-        channel.BasicConsume(_paymentQueueName, true, paymentQueueConsumer);
-        return Task.CompletedTask;
+        _channel.BasicConsume(_paymentQueueName, true, paymentQueueConsumer);
+        await Task.CompletedTask;
     }
 }
