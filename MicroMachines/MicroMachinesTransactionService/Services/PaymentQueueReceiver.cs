@@ -14,12 +14,19 @@ public class PaymentQueueReceiver : BackgroundService
     private IConnection _connection = null!;
     private IModel? _channel;
     private readonly string _paymentQueueName;
+    private readonly IProductService _productService;
+    private readonly IAccountService _accountService;
     private ConnectionFactory? _factory;
 
-    public PaymentQueueReceiver(IConfiguration configuration)
+    public PaymentQueueReceiver(
+        IConfiguration configuration,
+        IProductService productService,
+        IAccountService accountService)
     {
         _configuration = configuration;
         _paymentQueueName = configuration["PaymentQueue"];
+        _productService = productService;
+        _accountService = accountService;
     }
 
     public override Task StartAsync(CancellationToken cancellationToken)
@@ -56,14 +63,18 @@ public class PaymentQueueReceiver : BackgroundService
             var message = Encoding.UTF8.GetString(body);
             var order = JsonConvert.DeserializeObject<OrderReadDto>(message);
 
-            //var orderValue = await _productService.GetItineraryValueAsync(order.Itinerary);
-            //var userAccounts = await _accountService.GetUserAccountsAsync(order.UserId);
-            //var sufficientAccount = userAccounts.Where(x => x.IsClosed == false && x.Balance >= orderValue).FirstOrDefault();
+            var orderValue = await _productService.GetItineraryValueAsync(order.Itinerary);
+            var userAccounts = await _accountService.GetUserAccountsAsync(order.UserId);
+            if (userAccounts == null)
+            {
+                return;
+            }
+            var sufficientAccount = userAccounts.Where(x => x.IsClosed == false && x.Balance >= orderValue).FirstOrDefault();
 
-            //if (sufficientAccount == null)
-            //{
-            //    return;
-            //}
+            if (sufficientAccount == null)
+            {
+                return;
+            }
 
             //await _accountService.ChargeAccountAsync(sufficientAccount.Id, orderValue);
             //Transaction transaction = new Transaction()

@@ -26,4 +26,20 @@ public class AccountService : IAccountService
 
         return response.IsSuccessStatusCode;
     }
+
+    public async Task<IEnumerable<AccountReadDto>?> GetUserAccountsAsync(int userId)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        HttpRequestMessage request = new HttpRequestMessage(
+            HttpMethod.Get,
+            $"{_configuration["AccountService"]}/accounts/user/{userId}");
+        var response = await httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<IEnumerable<AccountReadDto>>();
+        }
+
+        return null;
+    }
 }
