@@ -15,6 +15,17 @@ public class AccountService : IAccountService
         _configuration = configuration;
     }
 
+    public async Task<bool> ChargeAccountAsync(int accountId, decimal orderValue)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        HttpRequestMessage request = new HttpRequestMessage(
+            HttpMethod.Put,
+            $"{_configuration["AccountService"]}/accounts/{accountId}/charge/{orderValue}");
+        var response = await httpClient.SendAsync(request);
+
+        return response.IsSuccessStatusCode;
+    }
+
     public async Task<bool> ExecuteTransactionAsync(TransactionUpdateDto transaction)
     {
         var httpClient = _httpClientFactory.CreateClient();

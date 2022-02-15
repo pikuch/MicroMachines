@@ -11,22 +11,34 @@ namespace MicroMachinesTransactionService.Services;
 public class PaymentQueueReceiver : BackgroundService
 {
     private readonly IConfiguration _configuration;
+    private readonly ITransactionRepository _transactionRepository;
     private IConnection _connection = null!;
     private IModel? _channel;
     private readonly string _paymentQueueName;
     private readonly IProductService _productService;
     private readonly IAccountService _accountService;
+    private readonly IStockService _stockService;
+    private readonly IUserService _userService;
+    private readonly IOrderService _orderService;
     private ConnectionFactory? _factory;
 
     public PaymentQueueReceiver(
         IConfiguration configuration,
+        ITransactionRepository transactionRepository,
         IProductService productService,
-        IAccountService accountService)
+        IAccountService accountService,
+        IStockService stockService,
+        IUserService userService,
+        IOrderService orderService)
     {
         _configuration = configuration;
+        _transactionRepository = transactionRepository;
         _paymentQueueName = configuration["PaymentQueue"];
         _productService = productService;
         _accountService = accountService;
+        _stockService = stockService;
+        _userService = userService;
+        _orderService = orderService;
     }
 
     public override Task StartAsync(CancellationToken cancellationToken)
@@ -64,6 +76,10 @@ public class PaymentQueueReceiver : BackgroundService
             var order = JsonConvert.DeserializeObject<OrderReadDto>(message);
 
             var orderValue = await _productService.GetItineraryValueAsync(order.Itinerary);
+            if (orderValue == null)
+            {
+                return;
+            }
             var userAccounts = await _accountService.GetUserAccountsAsync(order.UserId);
             if (userAccounts == null)
             {
@@ -76,20 +92,21 @@ public class PaymentQueueReceiver : BackgroundService
                 return;
             }
 
-            //await _accountService.ChargeAccountAsync(sufficientAccount.Id, orderValue);
-            //Transaction transaction = new Transaction()
-            //{
-            //    AccountFromId = sufficientAccount.Id,
-            //    AccountToId = 0,
-            //    TimeStamp = DateTime.UtcNow,
-            //    Amount = orderValue,
-            //    Status = TransactionStatus.Confirmed
-            //};
+            await _accountService.ChargeAccountAsync(sufficientAccount.Id, orderValue.Value);
 
-            //await _transactionRepository.CreateAsync(Transaction transaction);
-            //await _stockService.RemoveProducts(order.Itinerary);
-            //await _userService.AddProducts(order.Itinerary);
-            //await _orderService.UpdateOrder(order);
+            Transaction transaction = new Transaction()
+            {
+                AccountFromId = sufficientAccount.Id,
+                AccountToId = 0,
+                TimeStamp = DateTime.UtcNow,
+                Amount = orderValue.Value,
+                Status = TransactionStatus.Confirmed
+            };
+
+            await _transactionRepository.CreateAsync(transaction);
+            await _stockService.RemoveProducts(order.Itinerary);
+            await _userService.AddProducts(order.UserId, order.Itinerary);
+            await _orderService.ConfirmOrder(order.Id, transaction.Id);
         };
         _channel.BasicConsume(_paymentQueueName, true, paymentQueueConsumer);
         await Task.CompletedTask;

@@ -142,4 +142,25 @@ public class OrderController : ControllerBase
         bool result = await _orderRepository.AddItemsAsync(orderId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
         return (result) ? Ok() : BadRequest();
     }
+
+    [HttpPut("{orderId}/confirm/{transactionId}")]
+    [SwaggerOperation("Confirms the order with given id", "PUT /orders/{orderId}/confirm/{transactionId}")]
+    public async Task<ActionResult> Confirm(int orderId, int transactionId)
+    {
+        var foundOrder = await _orderRepository.GetByIdAsync(orderId);
+        if (foundOrder == null)
+        {
+            return NotFound();
+        }
+        if (foundOrder.Status != OrderStatus.Pending)
+        {
+            return BadRequest();
+        }
+        foundOrder.TransactionId = transactionId;
+        foundOrder.PurchaseDate = DateTime.UtcNow;
+        foundOrder.Status = OrderStatus.Confirmed;
+
+        bool result = await _orderRepository.UpdateAsync();
+        return (result) ? Ok() : BadRequest();
+    }
 }

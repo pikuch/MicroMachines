@@ -46,7 +46,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<bool> UpdateAsync()
     {
-        return await _context.SaveChangesAsync() == 1;
+        return await _context.SaveChangesAsync() >= 1;
     }
 
     public async Task<IEnumerable<Order>> GetForUserAsync(int userId)
