@@ -86,8 +86,8 @@ public class GatewayController : ControllerBase
     }
 
     [HttpPost]
-    [Route("transaction/create")]
-    [SwaggerOperation("Creates a new transaction", "POST api/transaction/create")]
+    [Route("transaction")]
+    [SwaggerOperation("Creates a new transaction", "POST api/transaction")]
     public async Task<ActionResult> CreateTransaction(TransactionCreateDto transactionCreateDto)
     {
         bool result = await _transactionService.CreateAsync(transactionCreateDto);
@@ -103,4 +103,12 @@ public class GatewayController : ControllerBase
         return (result) ? Ok() : BadRequest();
     }
 
+    [HttpPost]
+    [Route("order")]
+    [SwaggerOperation("Creates an order", "POST api/order")]
+    public async Task<ActionResult> CreateOrder(OrderCreateDto orderCreateDto)
+    {
+        bool result = await _orderService.CreateAsync(orderCreateDto);
+        return (result) ? Ok() : BadRequest();
+    }
 }

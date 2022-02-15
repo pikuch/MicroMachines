@@ -51,7 +51,30 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<ProductReadDto>>(productsInCategory));
     }
 
-    [HttpGet("{productId}", Name = "GetById")]
+    [HttpPut("value")]
+    [SwaggerOperation("Gets the value of the given itinerary", "PUT /products/value")]
+    public async Task<ActionResult<decimal?>> GetOrderValue([FromBody] List<ItineraryItemReadDto> itineraryItems)
+    {
+        var products = await _productRepository.GetAllAsync();
+        if (products == null)
+        {
+            return NotFound();
+        }
+        decimal orderValue = 0m;
+        foreach (var item in itineraryItems)
+        {
+            var product = products.Where(x => x.Id == item.ProductId).FirstOrDefault();
+            if (product == null)
+            {
+                return BadRequest();
+            }
+            orderValue += product.Price * item.Count;
+        }
+
+        return Ok(orderValue);
+    }
+
+    [HttpGet("{productId}")]
     [SwaggerOperation("Gets the product with given id", "GET /products/{productId}")]
     public async Task<ActionResult<ProductReadDto>> GetById(int productId)
     {

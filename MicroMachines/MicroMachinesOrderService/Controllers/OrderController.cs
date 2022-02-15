@@ -15,15 +15,21 @@ public class OrderController : ControllerBase
     private readonly ILogger<OrderController> _logger;
     private readonly IMapper _mapper;
     private readonly IOrderRepository _orderRepository;
+    private readonly IStockService _stockService;
+    private readonly IPaymentQueue _paymentQueue;
 
     public OrderController(
         ILogger<OrderController> logger,
         IMapper mapper,
-        IOrderRepository orderRepository)
+        IOrderRepository orderRepository,
+        IStockService stockService,
+        IPaymentQueue paymentQueue)
     {
         _logger = logger;
         _mapper = mapper;
         _orderRepository = orderRepository;
+        _stockService = stockService;
+        _paymentQueue = paymentQueue;
     }
 
     [HttpGet]
@@ -68,8 +74,25 @@ public class OrderController : ControllerBase
     public async Task<ActionResult> Create(OrderCreateDto order)
     {
         var newOrder = _mapper.Map<Order>(order);
-        newOrder.Status = OrderStatus.Pending;
+        bool sufficientStock = await _stockService.verifyStockAsync(order.Itinerary);
+        if (sufficientStock)
+        {
+            newOrder.Status = OrderStatus.Pending;
+        }
+        else
+        {
+            newOrder.Status = OrderStatus.Denied;
+        }
         var addedOrder = await _orderRepository.CreateAsync(newOrder);
+        if (newOrder.Status == OrderStatus.Pending)
+        {
+            bool enqueued = await _paymentQueue.Enqueue(_mapper.Map<OrderReadDto>(addedOrder));
+            if (!enqueued)
+            {
+                // deny the order when payment queue can't be reached
+                addedOrder.Status = OrderStatus.Denied;
+            }
+        }
         return CreatedAtRoute(nameof(GetById), new { orderId = addedOrder.Id }, _mapper.Map<OrderReadDto>(addedOrder));
     }
 
@@ -117,6 +140,27 @@ public class OrderController : ControllerBase
         }
 
         bool result = await _orderRepository.AddItemsAsync(orderId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
+        return (result) ? Ok() : BadRequest();
+    }
+
+    [HttpPut("{orderId}/confirm/{transactionId}")]
+    [SwaggerOperation("Confirms the order with given id", "PUT /orders/{orderId}/confirm/{transactionId}")]
+    public async Task<ActionResult> Confirm(int orderId, int transactionId)
+    {
+        var foundOrder = await _orderRepository.GetByIdAsync(orderId);
+        if (foundOrder == null)
+        {
+            return NotFound();
+        }
+        if (foundOrder.Status != OrderStatus.Pending)
+        {
+            return BadRequest();
+        }
+        foundOrder.TransactionId = transactionId;
+        foundOrder.PurchaseDate = DateTime.UtcNow;
+        foundOrder.Status = OrderStatus.Confirmed;
+
+        bool result = await _orderRepository.UpdateAsync();
         return (result) ? Ok() : BadRequest();
     }
 }

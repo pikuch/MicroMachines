@@ -7,4 +7,6 @@ public class OrderCreateDto
 {
     [Required]
     public int UserId { get; set; }
+    [Required]
+    public List<ItineraryItemReadDto> Itinerary { get; set; } = null!;
 }

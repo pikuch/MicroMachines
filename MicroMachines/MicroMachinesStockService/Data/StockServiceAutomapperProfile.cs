@@ -13,6 +13,7 @@ public class StockServiceAutomapperProfile : Profile
         CreateMap<Stock, StockReadDto>();
         CreateMap<ItineraryItemCreateDto, ItineraryItem>();
         CreateMap<ItineraryItemUpdateDto, ItineraryItem>();
+        CreateMap<ItineraryItemReadDto, ItineraryItem>();
         CreateMap<ItineraryItem, ItineraryItemReadDto>();
     }
 }

@@ -110,4 +110,17 @@ public class StockController : ControllerBase
         bool result = await _stockRepository.RemoveProductsAsync(stockId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
         return (result) ? Ok() : BadRequest();
     }
+
+    [HttpGet]
+    [Route("{stockId}/products")]
+    [SwaggerOperation("Check is products from the stock with given id are sufficient to fulfil the order", "GET /stocks/{stockId}/products")]
+    public async Task<ActionResult> VerifyProducts(int stockId, IEnumerable<ItineraryItemReadDto> items)
+    {
+        if (!items.Any())
+        {
+            return BadRequest();
+        }
+        bool result = await _stockRepository.VerifyProductsAsync(stockId, _mapper.Map<IEnumerable<ItineraryItem>>(items));
+        return (result) ? Ok() : NotFound();
+    }
 }
